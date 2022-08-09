@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Dish Details</title>
+    <link   rel="stylesheet" th:href="@{/images/css/mycss.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class="container text-center">
+    <div class="alert alert-success" role="alert" th:text="${savedDish}" th:if="${savedDish}"></div>
+    <div class="alert alert-danger" role="alert" th:text="${FailedSaveDish}" th:if="${FailedSaveDish}"></div>
+
+    <div class="row mt-3">
+        <th:block th:each="di:${dish}">
+            <div class="col-2">
+                <div class="card justify-content-center align-content-center" id="exampleCircle" >
+                    <div class="card-body">
+                        <img  style="width: 40%;height: 20%;border-radius: 50%" class="card-img-top" th:src="@{${di.getLogoImage}}"  alt="Card image cap">
+                        <h6 class="card-title" style="color: darkolivegreen;font-family: Calibri;font-size: 15px;font-style: italic;text-transform: capitalize">[[${di.name}]]</h6>
+                        <p class="card-text small" style="color: darkolivegreen;font-family: Calibri;font-size: 15px;font-style: italic;text-transform: capitalize">[[${di.description}]]</p>
+                        Rate :<span style="color: red"  class="card-text small">[[${di.averageRating}]]</span><br>
+                        Price :<span style="color: blue" class="card-text small">[[${di.price}]]$</span><br>
+                        Chef:
+                        <th:block th:each="chef:${dish.chef}" >
+                            <span style="color: darkred">[[${chef.userName}]]</span>
+                        </th:block>
+                        <form th:action="@{/customer/dish/order}" method="post">
+                            <input type="text" th:hidden="true" th:name="dishId" th:value="${di.id}">
+                            <input required type="text" th:name="quantity" class="card-text text-center" style="width: 100px;height: 20px" placeholder="Quantity"><br>
+                            <input type="submit" style="background-color: blue;color: white" value="Order" class="btn btn-sm">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>My Orders</title>
+    <link   rel="stylesheet" th:href="@{/images/css/mycss.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class="container text-center">
+    <div class="alert alert-success" role="alert" th:text="${OrderRecived}" th:if="${OrderRecived}"></div>
+    <div class="alert alert-success" role="alert" th:text="${orderRecivedFaild}" th:if="${orderRecivedFaild}"></div>
+
+
+    <div class="row mt-3">
+        <th:block th:each="order:${myorders}">
+            <th:block th:each="dish:${order.getDishOrders()}">
+                <div class="col-4">
+                    <div class="card justify-content-center align-content-center text-center" style="border-radius: 50%">
+                        <div class="card-body">
+                            <img  style="width: 50%;height: 50%;border-radius: 50%" class="card-img-top" th:src="@{${dish.getDish().getLogoImage()}}"  alt="Card image cap">
+                            <h6 class="card-title" style="color: darkolivegreen;font-family: Calibri;font-size: 20px;font-style: italic;text-transform: capitalize">[[${dish.getDish().getName()}]]</h6>
+                            Price :<span class="card-text small">[[${dish.getDish().getPrice()}]]$</span><br>
+                            Rate : <span class="card-text"> [[${dish.getDish().getAverageRating()}]]</span><br>
+                            Quantnity : <span class="card-text"> [[${dish.getQuantity}]]</span>
+                            <form th:action="@{/customer/recived}" method="get">
+                                <input th:hidden="true" th:name="orderId" th:value="${order.getOrderId}">
+                                <input type="submit" class="btn btn-primary mt-2" value="Recived">
+                            </form>
+                            <form th:action="@{/customer/rejected}">
+                                <input th:hidden="true" th:name="orderId" th:value="${order.getOrderId}">
+                                <input type="submit" class="btn btn-danger mt-2" value="Rejected">
+                            </form>
+                    </div>
+                </div>
+                </div>
+            </th:block>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>
